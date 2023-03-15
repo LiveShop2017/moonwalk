@@ -1,37 +1,238 @@
 <!DOCTYPE html>
-<html lang="{{ page.lang | default: "en" }}" class="html" data-theme="{{ site.theme_config.appearance | default: "auto" }}">
-        {%- include head.html -%}
-  <body>
-    <main class="page-content" aria-label="Content">
-      <div class="w">
+<html lang="{{ page.lang | default: "
+      en" }}" class="html" data-theme="{{ site.theme_config.appearance | default: "auto" }}">
+{%- include head.html -%}
+<style>
+    canvas {
+        display: block;
+        vertical-align: bottom;
+    }
+
+    #particles-js {
+        position: fixed;
+        z-index: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(40, 37, 53, 1);
+        opacity: 0.6;
+        background-image: url("/assets/images/bg.jpg");
+        background-size: cover;
+        background-position: 50% 50%;
+    }
+
+    #particles-js::before {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: rgba(40, 37, 53, 0.85);
+        filter: brightness(30%);
+    }
+
+    /* ---- stats.js ---- */
+    .count-particles {
+        background: #000022;
+        position: relative;
+        z-index: 1;
+        top: 48px;
+        left: 0;
+        width: 80px;
+        color: #13E8E9;
+        font-size: .8em;
+        text-align: left;
+        text-indent: 4px;
+        line-height: 14px;
+        padding-bottom: 2px;
+        font-family: Helvetica, Arial, sans-serif;
+        font-weight: bold;
+    }
+
+    .js-count-particles {
+        font-size: 1.1em;
+    }
+
+    #stats, .count-particles {
+        -webkit-user-select: none;
+        margin-top: 5px;
+        margin-left: 5px;
+        z-index: 1;
+    }
+
+    #stats {
+        border-radius: 3px 3px 0 0;
+        overflow: hidden;
+    }
+
+    .count-particles {
+        border-radius: 0 0 3px 3px;
+    }
+</style>
+<body>
+<div id="particles-js"></div>
+<main class="page-content" aria-label="Content" style="z-index: 1;position: relative;">
+
+    <div class="w">
         {{ content }}
         {% if site.theme_config.appearance_toggle %}
-          {% include toggle_theme_button.html %}
+        {% include toggle_theme_button.html %}
         {% endif %}
         <div class="credits">
-          {%- if site.theme_config.show_copyright == true -%}
-          &copy;&nbsp;{{ "now" | date: "%Y" }}&nbsp;{{site.author}}
-          &nbsp;
-          •
-          &nbsp;
-          {%- endif -%}
-          {%- if site.soopr -%}
-          Powered by <a href="https://www.soopr.co" target="_blank" rel="noreferrer">Soopr</a>
-          &nbsp;
-          •
-          &nbsp;
-          {%- endif -%}
-          Theme&nbsp; <a href="https://github.com/abhinavs/moonwalk" target="_blank" rel="noreferrer">Moonwalk</a>
+            {%- if site.theme_config.show_copyright == true -%}
+            &copy;&nbsp;{{ "now" | date: "%Y" }}&nbsp;{{site.author}}
+            &nbsp;
+            •
+            &nbsp;
+            {%- endif -%}
+            {%- if site.soopr -%}
+            Powered by <a href="https://www.soopr.co" target="_blank" rel="noreferrer">Soopr</a>
+            &nbsp;
+            •
+            &nbsp;
+            {%- endif -%}
+            Theme&nbsp; <a href="https://github.com/abhinavs/moonwalk" target="_blank" rel="noreferrer">Moonwalk</a>
         </div>
-      </div>
-    </main>
+    </div>
+</main>
 
-    {%- if site.soopr -%}
-      {%- if site.soopr.publish_token and jekyll.environment == "production" -%}
-        <script async defer data-soopr-token="{{site.soopr.publish_token}}" src="https://sdk.soopr.co/soopr.js"></script>
-      {%- else -%}
-        <script async defer src="https://sdk.soopr.co/soopr.js"></script>
-      {%- endif -%}
-    {%- endif -%}
-  </body>
+{%- if site.soopr -%}
+{%- if site.soopr.publish_token and jekyll.environment == "production" -%}
+<script async defer data-soopr-token="{{site.soopr.publish_token}}" src="https://sdk.soopr.co/soopr.js"></script>
+{%- else -%}
+<script async defer src="https://sdk.soopr.co/soopr.js"></script>
+{%- endif -%}
+{%- endif -%}
+<script src="http://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<script src="http://threejs.org/examples/js/libs/stats.min.js"></script>
+<script>
+    particlesJS("particles-js", {
+        "particles": {
+            "number": {"value": 50, "density": {"enable": true, "value_area": 1000}},
+            "color": {"value": "#fff3f9"},
+            "shape": {
+                "type": "polygon",
+                "stroke": {"width": 0, "color": "#000000"},
+                "polygon": {"nb_sides": 6},
+                "image": {"src": "img/github.svg", "width": 100, "height": 100}
+            },
+            "opacity": {
+                "value": 0.25,
+                "random": true,
+                "anim": {"enable": false, "speed": 1, "opacity_min": 0.1, "sync": false}
+            },
+            "size": {"value": 9, "random": true, "anim": {"enable": true, "speed": 2, "size_min": 5, "sync": false}},
+            "line_linked": {"enable": false, "distance": 500, "color": "#ffffff", "opacity": 0.5, "width": 2},
+            "move": {
+                "enable": true,
+                "speed": 2.5,
+                "direction": "top-left",
+                "random": true,
+                "straight": false,
+                "out_mode": "out",
+                "bounce": false,
+                "attract": {"enable": false, "rotateX": 560, "rotateY": 500}
+            }
+        },
+        "interactivity": {
+            "detect_on": "canvas",
+            "events": {
+                "onhover": {"enable": true, "mode": "bubble"},
+                "onclick": {"enable": true, "mode": "repulse"},
+                "resize": true
+            },
+            "modes": {
+                "grab": {"distance": 400, "line_linked": {"opacity": 0.5}},
+                "bubble": {"distance": 400, "size": 4, "duration": 0.3, "opacity": 1, "speed": 3},
+                "repulse": {"distance": 200, "duration": 0.4},
+                "push": {"particles_nb": 4},
+                "remove": {"particles_nb": 2}
+            }
+        },
+        "retina_detect": true
+    });
+    var count_particles, stats, update;
+    stats = new Stats;
+    stats.setMode(0);
+    stats.domElement.style.position = 'absolute';
+    stats.domElement.style.left = '0px';
+    stats.domElement.style.top = '0px';
+    document.body.appendChild(stats.domElement);
+    count_particles = document.querySelector('.js-count-particles');
+    update = function () {
+        stats.begin();
+        stats.end();
+        if (window.pJSDom[0].pJS.particles && window.pJSDom[0].pJS.particles.array) {
+            count_particles.innerText = window.pJSDom[0].pJS.particles.array.length;
+        }
+        requestAnimationFrame(update);
+    };
+    requestAnimationFrame(update);
+</script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Dreamer-Paul/Pio@2.4/static/pio.min.css" />
+<style>
+    @media only print {
+        .pio-container {
+            display: none;
+        }
+    }
+</style>
+<script async="async" src="https://cdn.jsdelivr.net/combine/gh/Dreamer-Paul/Pio@2.4/static/l2d.min.js,gh/Dreamer-Paul/Pio@2.4/static/pio.min.js" onload='
+    let pio_container = document.createElement("div");
+    pio_container.classList.add("pio-container");
+    pio_container.classList.add("right");
+    pio_container.style.bottom = "-2rem";
+    pio_container.style.zIndex = "1";
+    document.body.insertAdjacentElement("beforeend", pio_container);
+    let pio_action = document.createElement("div");
+    pio_action.classList.add("pio-action");
+    pio_container.insertAdjacentElement("beforeend", pio_action);
+    let pio_canvas = document.createElement("canvas");
+    pio_canvas.id = "pio";
+    pio_canvas.style.width = "14rem";
+    pio_canvas.width = "600";
+    pio_canvas.height = "800";
+    pio_container.insertAdjacentElement("beforeend", pio_canvas);
+    let pio = new Paul_Pio({
+      "mode": "fixed",
+      "hidden": true,
+      "night": "for(let i=7; i<16; ++i) if(document.body.classList.contains(`theme-base-0`+i.toString(16))) { document.body.classList.remove(`theme-base-0`+i.toString(16)); document.body.classList.add(`theme-base-0`+((i-6)%9+7).toString(16)); break; }",
+      "content": {
+        "link": ["https:\/\/jekyll-theme-WuK.wu-kan.cn"],
+        "skin": ["要换成我的朋友吗？", "让她放个假吧~"],
+        "hidden": true,
+        "custom": [{
+          "selector": "a",
+          "type": "link",
+        }, {
+          "selector": ".sidebar-toggle",
+          "text": "打开侧边栏叭~"
+        }, {
+          "selector": ".effect-info",
+          "text": "哇，你发现了什么！"
+        }, {
+          "selector": "#sidebar-search-input",
+          "text": "想搜索什么呢？很多干货哦！"
+        }, {
+          "selector": "#toc",
+          "text": "这是目录~"
+        }, {
+          "selector": ".page-title",
+          "text": "这是标题~"
+        }]
+      },
+      "model": [
+        "https:\/\/cdn.jsdelivr.net/gh/imuncle/live2d/model/33/model.2018.bls-winter.json",
+        "https:\/\/cdn.jsdelivr.net/gh/imuncle/live2d/model/platelet-2/model.json",
+        "https:\/\/cdn.jsdelivr.net/gh/imuncle/live2d/model/xiaomai/xiaomai.model.json",
+        "https:\/\/cdn.jsdelivr.net/gh/imuncle/live2d/model/mashiro/seifuku.model.json",
+        "https:\/\/cdn.jsdelivr.net/gh/imuncle/live2d/model/Violet/14.json",
+        "https:\/\/cdn.jsdelivr.net/gh/xiaoski/live2d_models_collection/Kobayaxi/Kobayaxi.model.json",
+        "https:\/\/cdn.jsdelivr.net/gh/xiaoski/live2d_models_collection/mikoto/mikoto.model.json",
+        "https:\/\/cdn.jsdelivr.net/gh/xiaoski/live2d_models_collection/uiharu/uiharu.model.json"]
+    });' type="text/javascript"></script>
+<script src="/assets/js/heart.js"></script>
+</body>
 </html>
